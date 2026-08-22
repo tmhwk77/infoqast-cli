@@ -1,0 +1,38 @@
+name: Stage npm release
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  stage:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    environment: npm-release
+    steps:
+      - name: Check out the release tag
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          fetch-depth: 0
+      - name: Set up Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          package-manager-cache: false
+      - name: Pin npm with trusted-publishing support
+        run: npm install --global npm@11.17.0
+      - name: Verify release tag and main ancestry
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: node scripts/verify-release-ref.mjs
+      - name: Install exact dependencies
+        run: npm ci --ignore-scripts
+      - name: Verify source, tests, coverage, build and package allowlist
+        run: npm run check
+      - name: Stage immutable package for human 2FA approval
+        run: npm stage publish --access public

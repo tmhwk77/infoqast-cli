@@ -1,0 +1,54 @@
+{
+  "name": "@infoqast/cli",
+  "version": "0.1.0-beta.1",
+  "description": "Tenant-safe InfoQast CLI over the public MCP protocol",
+  "type": "module",
+  "bin": {
+    "infoqast": "dist/index.js"
+  },
+  "files": [
+    "dist/*.js",
+    "dist/*.d.ts",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "check": "npm run typecheck && npm run test:coverage && npm run package:verify",
+    "package:verify": "npm run build && node scripts/verify-package.mjs",
+    "prepack": "npm run build",
+    "typecheck": "tsc --noEmit -p tsconfig.json",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "os": [
+    "darwin",
+    "linux"
+  ],
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.30.0",
+    "zod": "4.4.3"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "@vitest/coverage-v8": "^4.1.10",
+    "typescript": "^5.8.3",
+    "vitest": "^4.1.10"
+  },
+  "license": "MIT",
+  "homepage": "https://infoqast.com/developers",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tmhwk77/infoqast-cli.git"
+  },
+  "bugs": {
+    "url": "https://infoqast.com/support/inbox"
+  }
+}
