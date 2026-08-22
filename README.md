@@ -76,16 +76,19 @@ same checks on a GitHub-hosted runner.
 
 ## Release safety
 
-Releases are staged from the public repository by `.github/workflows/stage.yml`
-using npm trusted publishing (OIDC), not a long-lived registry token. The
-workflow accepts only a release tag whose version exactly matches
-`package.json`, verifies that the tagged commit belongs to `main`, reruns the
-full check, and calls `npm stage publish`. A human must inspect and approve the
-staged package with npm 2FA before it becomes immutable public registry state.
+After the one-time first-package bootstrap, releases are staged from the public
+repository by `.github/workflows/stage.yml` using npm trusted publishing
+(OIDC), not a long-lived registry token. The workflow accepts only a release
+tag whose version exactly matches `package.json`, verifies that the tagged
+commit belongs to `main`, reruns the full check, and calls `npm stage publish`.
+A human must inspect and approve the staged package with npm 2FA before it
+becomes immutable public registry state.
 
-Until the npm package exists and the exact trusted publisher is configured for
-`tmhwk77/infoqast-cli` / `stage.yml` / environment `npm-release` with
-stage-only permission, no release should be created.
+npm cannot stage a brand-new package or configure its trusted publisher before
+the package exists. The exact one-use GitHub provenance bootstrap, immediate
+token removal, and stage-only transition are documented in
+[RELEASING.md](RELEASING.md). Until the production and registry gates approve
+that procedure, no release tag or workflow dispatch is allowed.
 
 Security reports belong in [InfoQast Support](https://infoqast.com/support),
 not a public issue containing credentials or customer content.
