@@ -74,6 +74,12 @@ The package verifier builds the CLI, asks npm for the exact tarball manifest,
 and rejects any file outside the allowlist. Pull requests and `main` run the
 same checks on a GitHub-hosted runner.
 
+This public repository follows the [account CI policy](https://github.com/tmhwk77/tmhwk77/blob/main/CI_POLICY.md).
+Standard public runners do not incur Actions execution charges. All existing
+checks and the required `verify` status remain enabled; only superseded runs
+of the same PR are cancelled. Main and protected release workflows retain their
+complete validation and are never cancelled by this PR policy.
+
 ## Release safety
 
 After the one-time first-package bootstrap, releases are staged from the public
